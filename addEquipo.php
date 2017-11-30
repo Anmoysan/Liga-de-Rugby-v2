@@ -6,15 +6,13 @@ include_once 'arrays.php';
 
 $id = $_REQUEST['id'];
 
-$sql = "SELECT * from liga WHERE id = :id LIMIT 1";
+$sql = "SELECT liga.* from liga, equipo WHERE equipo.id = :id AND equipo.liga = liga.nombre LIMIT 1";
 $result = $pdo->prepare($sql);
 $result->execute([
     'id' => $id
 ]);
 
-while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    $liga = $row['nombre'];
-}
+$liga = $result->fetch(PDO::FETCH_ASSOC);
 
 $errors = array();  // Array donde se guardaran los errores de validación
 $error = false;     // Será true si hay errores de validación.
@@ -34,8 +32,12 @@ if (!empty($_POST)) {
         $errors['nombre']['required'] = "El campo nombre es requerido";
     }
 
-    if ($equipo['imagen'] == "") {
-        $errors['imagen']['required'] = "El campo imagen es requerido";
+    if (strpos(strtolower($equipo['nombre']), "equipo") === false) {
+        $equipo['nombre'] = "Equipo " . $equipo['nombre'];
+    }
+
+    if ($equipo['imagen'] == "" || !file_exists($equipo['imagen'])) {
+        $equipo['imagen'] = "imagenes/sinimagen.jpg";
     }
 
     if (empty($equipo['comunidad'])) {
@@ -50,8 +52,12 @@ if (!empty($_POST)) {
         $errors['puntuacion']['required'] = "El campo puntuacion es requerido";
     }
 
-    if (!is_numeric($equipo['puntuacion']) && $equipo['puntuacion'] != "") {
+    if (!is_numeric($equipo['puntuacion'])) {
         $errors['puntuacion']['numeric'] = "El campo puntuacion no es numero";
+    }
+
+    if ($equipo['puntuacion'] == "") {
+        $errors['puntuacion']['required'] = "El campo puntuacion es requerido";
     }
 
     if (empty($errors)) {
@@ -66,7 +72,7 @@ if (!empty($_POST)) {
             'imagen' => $equipo['imagen'],
             'comunidad' => $equipo['comunidad'],
             'entrenador' => $equipo['entrenador'],
-            'liga' => $liga,
+            'liga' => $liga['nombre'],
             'puntuacion' => $equipo['puntuacion']
         ]);
 
@@ -101,12 +107,9 @@ $error = !empty($errors) ? true : false;
                 <span class="sr-only">Toggle navigation</span>
             </button>
             <a class="navbar-brand" href="index.php">Inicio</a><span class="navbar-brand"> | </span>
-            <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-                <a class="navbar-brand" href="liga.php?id=<?= $row['id'] ?>">Liga</a><span
-                        class="navbar-brand"> | </span>
-                <a class="navbar-brand btn btn-primary btn-lg active" href="addEquipo.php?id=<?= $row['id'] ?>">Añadir
-                    Equipo</a>
-            <?php endwhile; ?>
+            <a class="navbar-brand" href="liga.php?id=<?= $liga['id'] ?>">Liga</a><span
+                    class="navbar-brand"> | </span>
+            <a class="navbar-brand btn btn-primary btn-lg active" href="addEquipo.php?id=<?= $liga['id'] ?>">Añadir Equipo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">

@@ -5,12 +5,17 @@ include_once 'helpers.php';
 include_once 'arrays.php';
 
 $id = $_REQUEST['id'];
-$idliga = $_REQUEST['idliga'];
 
-$sqlLiga = "SELECT * from liga WHERE id = :id LIMIT 1";
+$sqlJugador = "SELECT jugador.* from jugador, equipo WHERE equipo.id =:id AND equipo.nombre=jugador.equipo";
+$resultJugador = $pdo->prepare($sqlJugador);
+$resultJugador->execute([
+    'id' => $id
+]);
+
+$sqlLiga = "SELECT liga.* from liga, equipo WHERE equipo.id = :id AND equipo.liga = liga.nombre LIMIT 1";
 $resultLiga = $pdo->prepare($sqlLiga);
 $resultLiga->execute([
-    'id' => $idliga
+    'id' => $id
 ]);
 
 $sql = "SELECT * from equipo WHERE id = :id LIMIT 1";
@@ -40,10 +45,10 @@ $result->execute([
             </button>
             <a class="navbar-brand" href="index.php">Inicio</a><span class="navbar-brand"> | </span>
             <?php while ($rowLiga = $resultLiga->fetch(PDO::FETCH_ASSOC)): ?>
-            <a class="navbar-brand" href="liga.php?id=<?= $rowLiga['id'] ?>">Liga</a><span
-                    class="navbar-brand"> | </span>
-            <a class="navbar-brand btn btn-primary btn-lg active"
-               href="equipo.php?id=<?= $row['id'] ?>&idliga=<?= $rowLiga['id'] ?>">Equipo</a>
+            <a class="navbar-brand" href="liga.php?id=<?= $rowLiga['id'] ?>">Liga</a><span class="navbar-brand"> | </span>
+            <a class="navbar-brand btn btn-primary btn-lg active" href="equipo.php?id=<?= $row['id'] ?>">Equipo</a><span class="navbar-brand"> | </span>
+            <a class="navbar-brand" href="addJugador.php?id=<?= $row['id'] ?>">Añadir Jugador</a>
+
 
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -62,38 +67,59 @@ $result->execute([
 </nav>
 
 <div class="container">
-    <div class="col-sm-3 col-md-3">
-        <h1><?= $row['nombre'] ?></h1>
-    </div>
-    <div class="col-sm-7 col-md-7">
+    <div class="col-sm-2 col-md-2">
         <img src="<?= $row["imagen"] ?>" alt="No se ha podido encontrar la imagen">
     </div>
+    <div class="col-sm-8 col-md-8">
+        <h1><?= $row['nombre'] ?></h1>
+    </div>
     <div class="col-sm-1 col-md-1 botonesUtiles">
-        <a href="updateEquipo.php?id=<?= $row['id'] ?>&idliga=<?= $rowLiga['id'] ?>" class="editar"><span
+        <span>Modificar Equipo</span>
+        <a href="updateEquipo.php?id=<?= $row['id'] ?>" class="editar"><span
                     class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
     </div>
     <div class="col-sm-1 col-md-1 botonesUtiles">
-        <a href="deleteEquipo.php?id=<?= $row['id'] ?>&idliga=<?= $rowLiga['id'] ?>" class="borrar"><span
+        <span>Eliminar Equipo</span>
+        <a href="deleteEquipo.php?id=<?= $row['id'] ?>" class="borrar"><span
                     class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
     </div>
-    <div>
+    <div id="tabla">
+        <div>
+            <div class="col-sm-5  col-md-5">
+                <p>Comunidad: <?= $row['comunidad'] ?></p>
+                <p>Enternador: <?= $row['entrenador'] ?></p>
+            </div>
+            <div class="col-sm-5  col-md-5">
+                <p>Liga: <?= $rowLiga['nombre'] ?></p>
+                <?php endwhile; ?>
+                <p>Puntuacion: <?= $row['puntuacion'] ?></p>
+            </div>
+        </div><br>
         <table class="table table-striped">
+
             <thead>
             <tr>
-                <th>Comunidad</th>
-                <th>Entrenador</th>
-                <th>Liga</th>
-                <th>Puntuacion</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Posicion</th>
+                <th>Partidos</th>
+                <th>Media de Ensayos</th>
             </tr>
             </thead>
             <tbody>
+            <?php while ($rowJugador = $resultJugador->fetch(PDO::FETCH_ASSOC)): ?>
             <tr>
-                <td><?= $row['comunidad'] ?></td>
-                <td><?= $row['entrenador'] ?></td>
-                <td><?= $rowLiga['nombre'] ?></td>
-                <?php endwhile; ?>
-                <td><?= $row['puntuacion'] ?></td>
+                <td>
+                    <a href="jugador.php?id=<?= $rowJugador['id'] ?>"><img src="<?= $rowJugador['imagen'] ?>"></a>
+                </td>
+                <td>
+                    <a href="jugador.php?id=<?= $rowJugador['id'] ?>"><?= $rowJugador['nombre'] . " " . $rowJugador['apellido'] ?></a>
+                </td>
+                <td><?= $rowJugador['posicion'] ?></td>
+                <td><?= $rowJugador['partidos'] ?></td>
+                <td><?= $rowJugador['partidos'] / $rowJugador['ensayos'] ?></td>
             </tr>
+            <?php endwhile; ?>
             </tbody>
         </table>
     </div>

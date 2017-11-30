@@ -58,20 +58,27 @@ $resultEquipo->execute([
 </nav>
 
 <div class="container">
-    <div class="col-sm-10 col-md-10">
+    <div class="col-sm-2 col-md-2">
+        <img src="<?= $row['imagen'] ?>" alt="No se ha podido encontrar la imagen">
+    </div>
+    <div class="col-sm-8 col-md-8">
         <h1><?= $row['nombre'] ?></h1>
     </div>
     <div class="col-sm-1 col-md-1 botonesUtiles">
-        <a href="updateLiga.php?id=<?= $row['id'] ?>" class="editar"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+        <span>Modificar Liga &nbsp;&nbsp;</span>
+        <a href="updateLiga.php?id=<?= $row['id'] ?>" class="editar"><span class="glyphicon glyphicon-pencil"
+                                                                           aria-hidden="true"></span></a>
     </div>
     <div class="col-sm-1 col-md-1 botonesUtiles">
-        <a href="deleteLiga.php?id=<?= $row['id'] ?>" class="borrar"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+        <span>Eliminar Liga&nbsp;&nbsp;</span>
+        <a href="deleteLiga.php?id=<?= $row['id'] ?>" class="borrar"><span class="glyphicon glyphicon-remove"
+                                                                           aria-hidden="true"></span></a>
     </div>
     <div>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Equipos</th>
+                <th>Equipo</th>
                 <th>Puntuacion</th>
             </tr>
             </thead>
@@ -79,7 +86,7 @@ $resultEquipo->execute([
             <?php while ($rowEquipo = $resultEquipo->fetch(PDO::FETCH_ASSOC)): ?>
                 <tr>
                     <td>
-                        <a href="equipo.php?id=<?= $rowEquipo['id'] ?>&idliga=<?= $row['id'] ?>"><?= $rowEquipo['nombre'] ?></a>
+                        <a href="equipo.php?id=<?= $rowEquipo['id'] ?>"><?= $rowEquipo['nombre'] ?></a>
                     </td>
                     <td><?= $rowEquipo['puntuacion'] ?></td>
                 </tr>

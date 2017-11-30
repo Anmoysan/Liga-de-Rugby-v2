@@ -7,44 +7,54 @@ $errors = array();  // Array donde se guardaran los errores de validación
 $error = false;     // Será true si hay errores de validación.
 
 // Se construye un array asociativo $distro con todas sus claves vacías
-$liga = array_fill_keys(["nombre"], "");
+$liga = array_fill_keys(["nombre", "imagen"], "");
 
-if( !empty($_POST)){
+if (!empty($_POST)) {
     // Extraemos los datos enviados por POST
-    $liga['nombre'] = htmlspecialchars(trim($_POST['name']));
+    $liga['nombre'] = htmlspecialchars(trim($_POST['nombre']));
+    $liga['imagen'] = htmlspecialchars(trim($_POST['imagen']));
 
-    if( $liga['nombre'] == "" ){
+    if ($liga['nombre'] == "") {
         $errors['nombre']['required'] = "El campo nombre es requerido";
     }
 
-    if ( empty($errors) ){
+    if (strpos(strtolower($liga['nombre']), "liga") === false) {
+        $liga['nombre'] = "Liga " . $liga['nombre'];
+    }
+
+    if ($liga['imagen'] == "" || !file_exists($liga['imagen'])) {
+        $liga['imagen'] = "imagenes/sinimagen.jpg";
+    }
+
+    if (empty($errors)) {
         //dameDato($distro);
         // Si no tengo errores de validación
         // Guardo en la BD
-        $sql = "INSERT INTO liga (nombre) VALUES (:nombre)";
+        $sql = "INSERT INTO liga (nombre, imagen) VALUES (:nombre, :imagen)";
 
         $result = $pdo->prepare($sql);
 
         $result->execute([
-            'nombre'          => $liga['nombre']
+            'nombre' => $liga['nombre'],
+            'imagen' => $liga['imagen']
         ]);
 
         // Si se guarda sin problemas se redirecciona la aplicación a la página de inicio
         header('Location: index.php');
-    }else{
+    } else {
         // Si tengo errores de validación
         $error = true;
     }
 }
 
-$error = !empty($errors)?true:false;
+$error = !empty($errors) ? true : false;
 
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/app.css">
 
     <title>Liga de Rugby</title>
@@ -55,7 +65,8 @@ $error = !empty($errors)?true:false;
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
             </button>
             <a class="navbar-brand" href="index.php">Inicio</a><span class="navbar-brand"> | </span>
@@ -63,11 +74,11 @@ $error = !empty($errors)?true:false;
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <?php if ($user=="manolo"): ?>
+                <?php if ($user == "manolo"): ?>
                     <li><a href="login.php">Inicie Sesion</a></li>
                 <?php else: ?>
-                    <li><a href="login.php"><?=$user?></a></li>
-                <?php endif?>
+                    <li><a href="login.php"><?= $user ?></a></li>
+                <?php endif ?>
             </ul>
             <form class="navbar-form navbar-right">
                 <input type="text" class="form-control" placeholder="Search...">
@@ -80,9 +91,17 @@ $error = !empty($errors)?true:false;
     <h1>Añadir nueva Liga</h1>
     <form action="" method="post">
         <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre Liga">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre Liga">
         </div>
+        <?= generarAlert($errors, 'nombre') ?>
+
+        <div class="form-group">
+            <label for="imagen">Imagen</label>
+            <input type="text" class="form-control" id="imagen" name="imagen" placeholder="Imagen Liga">
+        </div>
+        <?= generarAlert($errors, 'imagen') ?>
+
         <button type="submit" class="btn btn-default">Enviar</button>
     </form>
 </div>

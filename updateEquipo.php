@@ -3,19 +3,21 @@ include_once 'config.php';
 include_once 'connect_db.php';
 include_once 'helpers.php';
 include_once 'arrays.php';
+include_once 'dbhelpers.php';
 
 $id = $_REQUEST['id'];
-$idliga = $_REQUEST['idliga'];
 
-$sql = "SELECT * from liga WHERE id = :id LIMIT 1";
+// Recuperar datos
+$equipos = getEquipo($id, $pdo);
+
+$sql = "SELECT liga.* from liga, equipo WHERE equipo.id = :id AND equipo.liga = liga.nombre LIMIT 1";
 $result = $pdo->prepare($sql);
 $result->execute([
-    'id' => $idliga
+    'id' => $id
 ]);
 
-/*while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    $liga = $row['nombre'];
-}*/
+$liga = $result->fetch(PDO::FETCH_ASSOC);
+
 
 $errors = array();  // Array donde se guardaran los errores de validación
 $error = false;     // Será true si hay errores de validación.
@@ -35,8 +37,12 @@ if (!empty($_POST)) {
         $errors['nombre']['required'] = "El campo nombre es requerido";
     }
 
-    if ($equipo['imagen'] == "") {
-        $errors['imagen']['required'] = "El campo imagen es requerido";
+    if (strpos(strtolower($equipo['nombre']), "equipo") === false) {
+        $equipo['nombre'] = "Equipo " . $equipo['nombre'];
+    }
+
+    if ($equipo['imagen'] == "" || !file_exists($equipo['imagen'])) {
+        $equipo['imagen'] = "imagenes/sinimagen.jpg";
     }
 
     if (empty($equipo['comunidad'])) {
@@ -47,12 +53,12 @@ if (!empty($_POST)) {
         $errors['entrenador']['required'] = "El campo entrenador es requerido";
     }
 
-    if ($equipo['puntuacion'] == "") {
-        $errors['puntuacion']['required'] = "El campo puntuacion es requerido";
+    if (!is_numeric($equipo['puntuacion'])) {
+        $errors['puntuacion']['numeric'] = "El campo puntuacion no es numero";
     }
 
-    if (!is_numeric($equipo['puntuacion']) && $equipo['puntuacion'] != "") {
-        $errors['puntuacion']['numeric'] = "El campo puntuacion no es numero";
+    if ($equipo['puntuacion'] == "") {
+        $errors['puntuacion']['required'] = "El campo puntuacion es requerido";
     }
 
     if (empty($errors)) {
@@ -68,12 +74,12 @@ if (!empty($_POST)) {
             'imagen' => $equipo['imagen'],
             'comunidad' => $equipo['comunidad'],
             'entrenador' => $equipo['entrenador'],
-            'liga' => $liga,
+            'liga' => $liga['nombre'],
             'puntuacion' => $equipo['puntuacion']
         ]);
 
         // Si se guarda sin problemas se redirecciona la aplicación a la página de inicio
-        header("Location: equipo.php?id=$id&idliga=$idliga");
+        header("Location: equipo.php?id=$id");
     } else {
         // Si tengo errores de validación
         $error = true;
@@ -103,12 +109,9 @@ $error = !empty($errors) ? true : false;
                 <span class="sr-only">Toggle navigation</span>
             </button>
             <a class="navbar-brand" href="index.php">Inicio</a><span class="navbar-brand"> | </span>
-            <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-                <? $liga = $row['nombre'] ?>
-                <a class="navbar-brand" href="liga.php?id=<?= $row['id'] ?>">Liga</a><span class="navbar-brand"> | </span>
-                <a class="navbar-brand" href="equipo.php?id=<?= $id ?>&idliga=<?= $row['id'] ?>">Equipo</a><span class="navbar-brand"> | </span>
-                <a class="navbar-brand btn btn-primary btn-lg active" href="addEquipo.php?id=<?= $row['id'] ?>">Modificar Equipo</a>
-            <?php endwhile; ?>
+            <a class="navbar-brand" href="liga.php?id=<?= $liga['id'] ?>">Liga</a><span class="navbar-brand"> | </span>
+            <a class="navbar-brand" href="equipo.php?id=<?= $id ?>">Equipo</a><span class="navbar-brand"> | </span>
+            <a class="navbar-brand btn btn-primary btn-lg active" href="addEquipo.php?id=<?= $id['id'] ?>">Modificar Equipo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -131,34 +134,34 @@ $error = !empty($errors) ? true : false;
         <div class="form-group<?php echo(isset($errors['nombre']['required']) ? " has-error" : ""); ?>">
             <label for="name">Nombre</label>
             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre Equipo"
-                   value="<?= $equipo['nombre'] ?>">
+                   value="<?= $equipos['nombre'] ?>">
         </div>
         <?= generarAlert($errors, 'nombre') ?>
 
         <div class="form-group<?php echo(isset($errors['imagen']['required']) ? " has-error" : ""); ?>">
             <label for="imagen">Imagen</label>
             <input type="text" class="form-control" id="imagen" name="imagen" placeholder="Imagen Equipo"
-                   value="<?= $equipo['imagen'] ?>">
+                   value="<?= $equipos['imagen'] ?>">
         </div>
         <?= generarAlert($errors, 'imagen') ?>
 
         <div class="form-group<?php echo(isset($errors['comunidad']['required']) ? " has-error" : ""); ?>">
             <label for="comunidad">Comunidad</label>
-            <?= generarSelect($comunidadValues, $equipo['comunidad'], "comunidad"); ?>
+            <?= generarSelect($comunidadValues, $equipos['comunidad'], "comunidad"); ?>
         </div>
         <?= generarAlert($errors, 'comunidad') ?>
 
         <div class="form-group<?php echo(isset($errors['entrenador']['required']) ? " has-error" : ""); ?>">
             <label for="entrenador">Entrenador</label>
             <input type="text" class="form-control" id="entrenador" name="entrenador" placeholder="Nombre Entrenador"
-                   value="<?= $equipo['entrenador'] ?>">
+                   value="<?= $equipos['entrenador'] ?>">
         </div>
         <?= generarAlert($errors, 'entrenador') ?>
 
         <div class="form-group<?php echo(isset($errors['puntuacion']['required']) ? " has-error" : ""); ?>">
             <label for="puntuacion">Puntuacion</label>
             <input type="text" class="form-control" id="puntuacion" name="puntuacion" placeholder="Nombre Puntuacion"
-                   value="<?= $equipo['puntuacion'] ?>">
+                   value="<?= $equipos['puntuacion'] ?>">
         </div>
         <?= generarAlert($errors, 'puntuacion') ?>
 

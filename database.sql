@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 09, 2017 at 11:14 AM
+-- Generation Time: Nov 30, 2017 at 02:44 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.1.5
 
@@ -43,9 +43,9 @@ CREATE TABLE `equipo` (
 --
 
 INSERT INTO `equipo` (`id`, `nombre`, `imagen`, `comunidad`, `entrenador`, `liga`, `puntuacion`) VALUES
-(10, 'fff', 'http://9722830f0a071c238f31-0bf39b81254f02fe2190e0dd4584cc20.r24.cf2.rackcdn.com/imagen_radio/portadaImagenRadio_cio.jpg', 'Andalucia', '4', 'Liga Heineken', 44),
-(11, 'qwewqe', 'eqweqw', 'Cantabria', 'qwe', 'Liga Heineken', 12),
-(16, 'qwe', 'dwq', 'Andalucia', '23d', 'deq', 32);
+(19, 'Equipo qwe', 'imagenes/sinimagen.jpg', 'La Rioja', 'qweqwe', 'Liga Heineken', 213),
+(20, 'Equipo asdqwd', 'imagenes/sinimagen.jpg', 'Murcia', 'dqwdq', 'Liga Heineken', 2131),
+(21, 'qwdqw', 'imagenes/sinimagen.jpg', 'Andalucia', 'qwdqwd', 'sdaf', 12);
 
 -- --------------------------------------------------------
 
@@ -54,18 +54,28 @@ INSERT INTO `equipo` (`id`, `nombre`, `imagen`, `comunidad`, `entrenador`, `liga
 --
 
 CREATE TABLE `jugador` (
+  `id` int(11) NOT NULL,
+  `imagen` tinytext NOT NULL,
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(60) NOT NULL,
-  `dni` char(9) NOT NULL,
   `edad` int(3) NOT NULL,
   `altura` decimal(10,0) NOT NULL,
   `peso` decimal(10,0) NOT NULL,
   `posicion` tinytext NOT NULL,
-  `mediaEnsayoPartido` decimal(11,0) NOT NULL,
-  `mediaAmarillaPartido` decimal(11,0) NOT NULL,
-  `mediaRojaPartido` decimal(11,0) NOT NULL,
+  `partidos` int(11) NOT NULL,
+  `ensayos` int(11) NOT NULL,
+  `amarillas` int(11) NOT NULL,
+  `rojas` int(11) NOT NULL,
   `equipo` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `jugador`
+--
+
+INSERT INTO `jugador` (`id`, `imagen`, `nombre`, `apellido`, `edad`, `altura`, `peso`, `posicion`, `partidos`, `ensayos`, `amarillas`, `rojas`, `equipo`) VALUES
+(2, 'imagenes/sinimagen.jpg', 'qweqwe', 'qwe', 12, 12, 12, 'Pilar(1, 3)', 123, 12, 12, 12, 'Equipo qwe'),
+(4, 'imagenes/sinimagen.jpg', 'fwe', 'efwf', 3265, 23, 65, 'Pilar(1, 3)', 5, 234, 234, 234, 'Equipo qwe');
 
 -- --------------------------------------------------------
 
@@ -75,35 +85,19 @@ CREATE TABLE `jugador` (
 
 CREATE TABLE `liga` (
   `id` int(11) NOT NULL,
-  `nombre` tinytext NOT NULL
+  `nombre` tinytext NOT NULL,
+  `imagen` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `liga`
 --
 
-INSERT INTO `liga` (`id`, `nombre`) VALUES
-(6, 'Liga Heineken'),
-(7, 'Liga Iberdrola'),
-(9, 'deq');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `partido`
---
-
-CREATE TABLE `partido` (
-  `id` int(11) NOT NULL,
-  `equipo1` varchar(60) NOT NULL,
-  `ensayosLocal` int(11) NOT NULL,
-  `equipo2` varchar(60) NOT NULL,
-  `ensayosVisitante` int(11) NOT NULL,
-  `estadio` tinytext NOT NULL,
-  `arbitro` tinytext NOT NULL,
-  `fechaHora` datetime NOT NULL,
-  `liga` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `liga` (`id`, `nombre`, `imagen`) VALUES
+(15, 'Liga Iberdrola', 'http://e00-marca.uecdn.es/assets/multimedia/imagenes/2017/10/05/15072132782915.png'),
+(25, 'Liga Heineken', 'http://www.ferugby.es/userfiles/image/Imagenes%20Noticias%2017%2018/Liga/logo%20Liga%20Heineken_baja.jpg'),
+(38, 'Liga sadas', 'http://www.phoenixpumps.com/uimages/manufacturers/Paco_Logo_2.png'),
+(39, 'Liga qwe', 's');
 
 --
 -- Indexes for dumped tables
@@ -116,15 +110,15 @@ ALTER TABLE `equipo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `liga`
+-- Indexes for table `jugador`
 --
-ALTER TABLE `liga`
+ALTER TABLE `jugador`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `partido`
+-- Indexes for table `liga`
 --
-ALTER TABLE `partido`
+ALTER TABLE `liga`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -135,17 +129,17 @@ ALTER TABLE `partido`
 -- AUTO_INCREMENT for table `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- AUTO_INCREMENT for table `jugador`
+--
+ALTER TABLE `jugador`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `liga`
 --
 ALTER TABLE `liga`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
---
--- AUTO_INCREMENT for table `partido`
---
-ALTER TABLE `partido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

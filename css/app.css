@@ -1,12 +1,16 @@
 body {
-    padding-top: 50px;
+    padding-top: 70px;
 }
 
 img {
     height: 100px;
     width: 100px;
     padding-top: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+}
+
+table {
+    margin-top: 250px;
 }
 
 .editar {
@@ -20,4 +24,36 @@ img {
 .botonesUtiles {
     padding-top: 40px;
     margin-bottom: 50px;
+}
+
+div.img{
+    display:table;
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+div.img img{
+    margin:0;
+    padding:0;
+    width: 250px;
+    height: 150px;
+}
+div.img span{
+    line-height:normal;
+    font-size:11px;
+    display:table-caption;
+    margin:0;
+    background:#646464;
+    color:white;
+    font-style:italic;
+    padding:5px;
+    text-align:center;
+}
+
+img.logo {
+    width: 250px;
+    height: 150px;
+}
+
+.centrado {
+    text-align: center;
 }

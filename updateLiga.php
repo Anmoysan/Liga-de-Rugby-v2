@@ -2,34 +2,48 @@
 include_once 'config.php';
 include_once 'connect_db.php';
 include_once 'helpers.php';
+include_once 'dbhelpers.php';
 
 $id = $_REQUEST['id'];
+
+// Recuperar datos
+$ligas = getLiga($id, $pdo);
 
 $errors = array();  // Array donde se guardaran los errores de validación
 $error = false;     // Será true si hay errores de validación.
 
 // Se construye un array asociativo $distro con todas sus claves vacías
-$liga = array_fill_keys(["nombre"], "");
+$liga = array_fill_keys(["nombre", "imagen"], "");
 
 if (!empty($_POST)) {
     // Extraemos los datos enviados por POST
     $liga['nombre'] = htmlspecialchars(trim($_POST['name']));
+    $liga['imagen'] = htmlspecialchars(trim($_POST['imagen']));
 
     if ($liga['nombre'] == "") {
         $errors['nombre']['required'] = "El campo nombre es requerido";
+    }
+
+    if (strpos(strtolower($liga['nombre']), "liga") === false) {
+        $liga['nombre'] = "Liga " . $liga['nombre'];
+    }
+
+    if ($liga['imagen'] == "" || !file_exists($liga['imagen'])) {
+        $liga['imagen'] = "imagenes/sinimagen.jpg";
     }
 
     if (empty($errors)) {
         //dameDato($distro);
         // Si no tengo errores de validación
         // Guardo en la BD
-        $sql = "UPDATE liga SET nombre = :nombre WHERE id = :id LIMIT 1";
+        $sql = "UPDATE liga SET nombre = :nombre, imagen = :imagen WHERE id = :id LIMIT 1";
 
         $result = $pdo->prepare($sql);
 
         $result->execute([
             'id' => $id,
-            'nombre' => $liga['nombre']
+            'nombre' => $liga['nombre'],
+            'imagen' => $liga['imagen']
         ]);
 
         // Si se guarda sin problemas se redirecciona la aplicación a la página de inicio
@@ -86,7 +100,11 @@ $error = !empty($errors) ? true : false;
     <form action="" method="post">
         <div class="form-group">
             <label for="name">Nombre</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre Liga">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre Liga" value="<?= $ligas['nombre'] ?>">
+        </div>
+        <div class="form-group">
+            <label for="imagen">Imagen</label>
+            <input type="text" class="form-control" id="imagen" name="imagen" placeholder="Imagen Liga" value="<?= $ligas['imagen'] ?>">
         </div>
         <button type="submit" class="btn btn-default">Enviar</button>
     </form>
