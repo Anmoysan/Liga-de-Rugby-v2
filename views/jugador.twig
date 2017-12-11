@@ -1,0 +1,62 @@
+{% extends "layout.twig" %}
+
+{% block nav %}
+    <span class="navbar-brand"> | </span>
+    <a class="navbar-brand" href="../jugadores/{{ jugador.id }}">Jugador</a>
+{% endblock %}
+
+{% block content %}
+    <div class="col-sm-2 col-md-2">
+        <img src="{{ jugador.imagen }}" alt="Imagen de {{ jugador.nombre }} {{ jugador.apellido }}">
+    </div>
+    <div class="col-sm-8 col-md-8">
+        <h1>{{ jugador.nombre }} {{ jugador.apellido }}</h1>
+    </div>
+
+    {% if session.userId %}
+    <div class="col-sm-1 col-md-1 botonesUtiles">
+        <p>Modificar Equipo</p>
+        <a href="../jugadores/edit/{{ jugador.id }}" class="editar" role="button"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+    </div>
+    <div class="col-sm-1 col-md-1 botonesUtiles">
+        <p>Eliminar Equipo</p>
+        <form action="../jugadores" method="POST" id="deleteJugador-{{ jugador.id }}" class="formBajo">
+            <input type="hidden" name="id" value="{{ jugador.id }}">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn btn-link btn-alert borrar" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div>
+        <div>
+            <div class="col-sm-5  col-md-5 centrado">
+                <p>Edad: {{ jugador.edad }}</p>
+                <p>Altura: {{ jugador.altura }}</p>
+                <p>Peso: {{ jugador.peso }}</p>
+            </div>
+            <div class="col-sm-5  col-md-5 centrado">
+                <p>Equipo: {{ jugador.equipo }}</p>
+                <p>Posicion: {{ jugador.posicion }}</p>
+            </div>
+        </div><br>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Partidos jugados</th>
+                <th>Media Ensayos/Partidos</th>
+                <th>Media Amarillas/Partidos</th>
+                <th>Media Rojas/Partidos</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ jugador.partidos }}</td>
+                <td>{{ (jugador.partidos/jugador.ensayos)|number_format(2, ',', '.') }}</td>
+                <td>{{ (jugador.partidos/jugador.amarillas)|number_format(2, ',', '.') }}</td>
+                <td>{{ (jugador.partidos/jugador.rojas)|number_format(2, ',', '.') }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

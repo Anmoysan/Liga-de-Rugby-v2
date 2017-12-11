@@ -1,0 +1,4 @@
+DB_HOST=localhost
+DB_NAME=rugbybd
+DB_USER=manolo
+DB_PASS=manolo

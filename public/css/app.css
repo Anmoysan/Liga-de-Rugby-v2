@@ -57,3 +57,11 @@ img.logo {
 .centrado {
     text-align: center;
 }
+
+form.navbar-brand {
+    padding-top: 13px;
+}
+
+form.formBajo {
+    padding-top: 0px;
+}

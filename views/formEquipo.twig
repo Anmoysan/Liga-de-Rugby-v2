@@ -1,0 +1,57 @@
+{% extends 'layout.twig' %}
+
+{% block js %}
+{% endblock %}
+
+
+
+{% block nav %}
+    <span class="navbar-brand"> | </span>
+    <form action="../equipos/new" method="POST" id="newEquipo" class="navbar-brand">
+        <input type="hidden" name="nombreLiga" value="{{ liga.nombre }}">
+        <input type="hidden" name="_method" value="GET">
+        <button type="submit" class="btn-link btn-alert"><span>Añadir Equipo</span></button>
+    </form>
+{% endblock %}
+
+
+
+{% block content %}
+    <h1>{{ webInfo.h1 }}</h1>
+    <form action="" method="post">
+        <div class="form-group {%  if errors['nombre'] %}has-error{% endif %}">
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre Equipo" value="{{ equipo.nombre }}">
+        </div>
+        {{ generateAlert(errors, 'nombre') }}
+
+        <div class="form-group {%  if errors['imagen'] %}has-error{% endif %}">
+        <label for="imagen">Imagen</label>
+        <input type="text" class="form-control" id="imagen" name="imagen" placeholder="Imagen Equipo" value="{{ equipo.imagen }}">
+        </div>
+        {{ generateAlert(errors, 'imagen') }}
+
+        <div class="form-group {%  if errors['comunidad'] %}has-error{% endif %}">
+        <label for="comunidad">Comunidad</label>
+            {{ generateSelect(comunidadValues, equipo['comunidad'], 'comunidad', false) }}
+        </div>
+        {{ generateAlert(errors, 'comunidad') }}
+
+        <div class="form-group {%  if errors['entrenador'] %}has-error{% endif %}">
+        <label for="entrenador">Entrenador</label>
+        <input type="text" class="form-control" id="entrenador" name="entrenador" placeholder="Nombre Entrenador" value="{{ equipo.entrenador }}">
+        </div>
+        {{ generateAlert(errors, 'entrenador') }}
+
+        <div class="form-group {%  if errors['puntuacion'] %}has-error{% endif %}">
+        <label for="puntuacion">Puntuacion</label>
+        <input type="text" class="form-control" id="puntuacion" name="puntuacion" placeholder="Nombre Puntuacion" value="{{ equipo.puntuacion }}">
+        </div>
+        {{ generateAlert(errors, 'puntuacion') }}
+
+
+        <input type="hidden" name="nombreLiga" value="{{ nombreLiga }}">
+        <input type="hidden" name="_method" value="{{ webInfo.method }}">
+        <button type="submit" class="btn btn-default">Enviar</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% block js %}
+{% endblock %}
+
+
+
+{% block nav %}
+    <span class="navbar-brand"> | </span>
+    <a class="navbar-brand" href="{{ 'ligas/new' | url }}">Añadir Liga</a>
+{% endblock %}
+
+
+
+{% block content %}
+    <h1>Ligas de Rugby</h1><br>
+    <div class="ligas">
+        {% for liga in ligas %}
+            <a href="ligas/{{ liga.id }}">
+                <div class="col-sm-3 col-md-3 img">
+                    <img class="logo" src='{{ liga.imagen }}' alt="Logo de {{ liga.nombre }}"/>
+                    <span>{{ liga.nombre }}</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
