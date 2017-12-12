@@ -9,9 +9,9 @@ use Sirius\Validation\Validator;
 class EquiposController extends BaseController {
 
     /**
-     * Ruta [GET] /distros/new que muestra el formulario de añadir una nueva distribución.
+     * Ruta [GET] /equipos/new que muestra el formulario de añadir un nuevo equipo.
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Envia al formulario de equipos
      */
     public function getNew(){
         global $comunidadValues;
@@ -39,9 +39,9 @@ class EquiposController extends BaseController {
     }
 
     /**
-     * Ruta [POST] /distros/new que procesa la introducción de una nueva distribución.
+     * Ruta [POST] /equipos/new que procesa la introducción de un nuevo equipo.
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
     public function postNew(){
         global $comunidadValues;
@@ -56,14 +56,14 @@ class EquiposController extends BaseController {
         if (!empty($_POST)) {
             $validator = new Validator();
 
+            //Mensajes que se muestran si hay algun error con los datos introducidos
             $requiredFieldMessageError = "El {label} es requerido";
             $numberFieldMessageError = "El {label} debe ser un numero entero";
             $rangePuntuacionFieldMessageError = "El rango del campo Puntuacion es entre 0 y 200";
-            $imagenFieldMessageError = "La imagen no es valida o que el formato no es jpg, jpeg, png o gif";
 
+            //Se comprueba si los datos introducidos son correctos
             $validator->add('nombre:Nombre', 'required', [],$requiredFieldMessageError);
             $validator->add('imagen:Imagen', 'required', [], $requiredFieldMessageError);
-            //$validator->add('imagen:Imagen', 'File\Image', 'jpg,jpeg,png,gif', $imagenFieldMessageError);
             $validator->add('comunidad:Comunidad', 'required', [], $requiredFieldMessageError);
             $validator->add('entrenador:Entrenador','required', [],$requiredFieldMessageError);
             $validator->add('puntuacion:Puntuacion','required', [],$requiredFieldMessageError);
@@ -78,10 +78,13 @@ class EquiposController extends BaseController {
             $equipo['puntuacion'] = htmlspecialchars(trim($_POST['puntuacion']));
 
             if ( $validator->validate($_POST) ){
+
+                //Si el nombre no contiene "equipo" lo creara
                 if (strpos(strtolower($equipo['nombre']), "equipo") === false) {
                     $equipo['nombre'] = "Equipo " . $equipo['nombre'];
                 }
 
+                //Comprueba si la imagen es correcta o no
                 $equipo['imagen'] = imagenExiste($equipo['imagen']);
 
                 $equipo = new Equipo([
@@ -111,11 +114,11 @@ class EquiposController extends BaseController {
     }
 
     /**
-     * Ruta [GET] /distros/edit/{id} que muestra el formulario de actualización de una nueva distribución.
+     * Ruta [GET] /equipos/edit/{id} que muestra el formulario de actualización del equipo seleccionado
      *
-     * @param id Código de la distribución.
+     * @param id - Código del equipo
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Envia al formulario de equipos
      */
     public function getEdit($id){
         global $comunidadValues;
@@ -144,12 +147,12 @@ class EquiposController extends BaseController {
     }
 
     /**
-     * Ruta [PUT] /distros/edit/{id} que actualiza toda la información de una distribución. Se usa el verbo
-     * put porque la actualización se realiza en todos los campos de la base de datos.
+     * Ruta [PUT] /equipos/edit/{id} que actualiza toda la información del equipo seleccionado
+     * Se usa el verbo put porque la actualización se realiza en todos los campos de la base de datos
      *
-     * @param id Código de la distribución.
+     * @param id - Código del equipo
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
     public function putEdit($id){
         global $comunidadValues;
@@ -165,14 +168,14 @@ class EquiposController extends BaseController {
         if( !empty($_POST)){
             $validator = new Validator();
 
+            //Mensajes que se muestran si hay algun error con los datos introducidos
             $requiredFieldMessageError = "El {label} es requerido";
             $numberFieldMessageError = "El {label} debe ser un numero entero";
             $rangePuntuacionFieldMessageError = "El rango del campo Puntuacion es entre 0 y 200";
-            $imagenFieldMessageError = "La imagen no es valida o que el formato no es jpg, jpeg, png o gif";
 
+            //Se comprueba si los datos introducidos son correctos
             $validator->add('nombre:Nombre', 'required', [],$requiredFieldMessageError);
             $validator->add('imagen:Imagen', 'required', [], $requiredFieldMessageError);
-            //$validator->add('imagen:Imagen', 'File\Image', 'jpg,jpeg,png,gif', $imagenFieldMessageError);
             $validator->add('comunidad:Comunidad', 'required', [], $requiredFieldMessageError);
             $validator->add('entrenador:Entrenador','required', [],$requiredFieldMessageError);
             $validator->add('puntuacion:Puntuacion','required', [],$requiredFieldMessageError);
@@ -187,10 +190,13 @@ class EquiposController extends BaseController {
             $equipo['puntuacion'] = htmlspecialchars(trim($_POST['puntuacion']));
 
             if ( $validator->validate($_POST) ){
+
+                //Si el nombre no contiene "equipo" lo creara
                 if (strpos(strtolower($equipo['nombre']), "equipo") === false) {
                     $equipo['nombre'] = "Equipo " . $equipo['nombre'];
                 }
 
+                //Comprueba si la imagen es correcta o no
                 $equipo['imagen'] = imagenExiste($equipo['imagen']);
 
                 $equipo = Equipo::where('id', $id)->update([
@@ -201,7 +207,6 @@ class EquiposController extends BaseController {
                     'puntuacion'     => $equipo['puntuacion']
                 ]);
 
-                // Si se guarda sin problemas se redirecciona la aplicación a la página de inicio
                 header('Location: ' . BASE_URL);
             }else{
                 $errors = $validator->getMessages();
@@ -215,16 +220,16 @@ class EquiposController extends BaseController {
     }
 
     /**
-     * Ruta raíz [GET] /distros para la dirección home de la aplicación. En este caso se muestra la lista de distribuciones.
+     * Ruta raíz [GET] /equipos para la dirección /ligas/{id} de la aplicacion
+     * En este caso se muestra la lista de equipos
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Devuelve todos los equipos de una liga
      *
-     * Ruta [GET] /distro/{id} que muestra la página de detalle de la distribución.
-     * todo: La vista de detalle está pendiente de implementar.
+     * Ruta [GET] /equipos/{id} que muestra la página de detalle del equipo
      *
-     * @param id Código de la distribución.
+     * @param id - Código del equipo
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Devuelve todos los datos del equipo
      */
     public function getIndex($id = null){
         if( is_null($id) ){
@@ -249,13 +254,14 @@ class EquiposController extends BaseController {
 
             $equipo = Equipo::find($id);
 
+            //Si el jugador con esa id no existe te envia a una pagina de error
             if( !$equipo ){
                 return $this->render('404.twig', ['webInfo' => $webInfo]);
             }
 
+            //Coge todos los jugadores que estan ese equipo
             $jugadores = Jugador::where('equipo', $equipo['nombre'])->get();
 
-            //dameDato($distro);
             return $this->render('equipo.twig', [
                 'jugadores' => $jugadores,
                 'equipo' => $equipo,
@@ -265,7 +271,7 @@ class EquiposController extends BaseController {
     }
 
     /**
-     * Ruta [DELETE] /distros/delete para eliminar la distribución con el código pasado
+     * Ruta [DELETE] /equipos/delete para eliminar al equipo con el código pasado
      */
     public function deleteIndex(){
         $id = $_REQUEST['id'];

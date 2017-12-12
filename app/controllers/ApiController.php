@@ -9,6 +9,10 @@ use App\Models\Liga;
 class ApiController
 {
 
+    /**
+     * @param null $id
+     * @return string
+     */
     public function getLigas($id = null)
     {
         if (is_null($id)) {
@@ -24,6 +28,10 @@ class ApiController
         }
     }
 
+    /**
+     * @param null $id
+     * @return string
+     */
     public function getEquipos($id = null)
     {
         if (is_null($id)) {
@@ -39,6 +47,10 @@ class ApiController
         }
     }
 
+    /**
+     * @param null $id
+     * @return string
+     */
     public function getJugadores($id = null)
     {
         if (is_null($id)) {

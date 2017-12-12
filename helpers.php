@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Funncion que devuelve los valores de un dato introducido
+ * @param $dato - Dato del cual se quiere saber sus datos
+ */
 function dameDato($dato){
     echo '<pre>';
     print_r($dato);
@@ -7,6 +11,11 @@ function dameDato($dato){
     die();
 }
 
+/**
+ * Funcion que comprueba que la imagen existe, si no existe se pondra una imagen por defecto
+ * @param $url - Imagen introducida
+ * @return string - Imagen introducida si es correcta o la imagen por defecto
+ */
 function imagenExiste($url){
     $web=getimagesize($url);
         if(!is_array($web)){

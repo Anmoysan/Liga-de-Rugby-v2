@@ -1,5 +1,12 @@
 body {
     padding-top: 70px;
+    background-image: url("../imagenes/fondo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+a, h1, form, div {
+    color: white;
 }
 
 img {
@@ -7,6 +14,20 @@ img {
     width: 100px;
     padding-top: 10px;
     margin-bottom: 20px;
+}
+
+nav, .dropdown-menu {
+    background-color: #434343;
+    color: #949494;
+}
+
+.dropdown-menu li a {
+    color: #949494;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #434343;
+    color: white;
 }
 
 table {
@@ -64,4 +85,30 @@ form.navbar-brand {
 
 form.formBajo {
     padding-top: 0px;
+}
+
+.dropdow li a:hover {
+    background-color:#434343;
+}
+
+.dropdow li ul {
+    display:none;
+    position:absolute;
+    min-width:140px;
+    list-style:none;
+}
+
+.dropdow li:hover {
+    display:block;
+    list-style:none;
+}
+
+.dropdow li ul li {
+    position:relative;
+
+}
+
+.dropdow li ul li ul {
+    right:-140px;
+    top:0px;
 }

@@ -8,9 +8,9 @@ use Sirius\Validation\Validator;
 class JugadoresController extends BaseController {
 
     /**
-     * Ruta [GET] /distros/new que muestra el formulario de añadir una nueva distribución.
+     * Ruta [GET] /jugadores/new que muestra el formulario de añadir un nuevo jugador.
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Envia al formulario de ligas
      */
     public function getNew(){
         global $posicionValues;
@@ -37,9 +37,9 @@ class JugadoresController extends BaseController {
     }
 
     /**
-     * Ruta [POST] /distros/new que procesa la introducción de una nueva distribución.
+     * Ruta [POST] /jugadores/new que procesa la introducción de un nuevo jugador.
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
     public function postNew(){
         global $posicionValues;
@@ -54,9 +54,9 @@ class JugadoresController extends BaseController {
         if (!empty($_POST)) {
             $validator = new Validator();
 
+            //Mensajes que se muestran si hay algun error con los datos introducidos
             $requiredFieldMessageError = "El {label} es requerido";
             $numberFieldMessageError = "El {label} debe ser un numero";
-            $imagenFieldMessageError = "La imagen no es valida o que el formato no es jpg, jpeg, png o gif";
             $rangeEdadFieldMessageError = "El rango del campo Edad es entre 0 y 115";
             $rangeAlturaFieldMessageError = "El rango del campo Altura es entre 1.30 y 2.30";
             $rangePesoFieldMessageError = "El rango del campo Peso es entre 40 y 300";
@@ -65,8 +65,8 @@ class JugadoresController extends BaseController {
             $rangeAmarillasFieldMessageError = "El rango del campo Tarjetas amarillas es entre 0 y 500";
             $rangeRojasFieldMessageError = "El rango del campo Tarjetas rojas es entre 0 y 500";
 
+            //Se comprueba si los datos introducidos son correctos
             $validator->add('imagen:Imagen', 'required',[],$requiredFieldMessageError);
-            //$validator->add('imagen:Imagen', 'File\Image', 'jpg,jpeg,png,gif', $imagenFieldMessageError);
             $validator->add('nombre:Nombre', 'required',[],$requiredFieldMessageError);
             $validator->add('apellido:Apellidos', 'required', [], $requiredFieldMessageError);
             $validator->add('edad:Edad', 'required',[], $requiredFieldMessageError);
@@ -107,6 +107,7 @@ class JugadoresController extends BaseController {
 
             if ($validator->validate($_POST)) {
 
+                //Comprueba si la imagen es correcta o no
                 $jugador['imagen'] = imagenExiste($jugador['imagen']);
 
                 $jugador = new Jugador([
@@ -141,11 +142,11 @@ class JugadoresController extends BaseController {
     }
 
     /**
-     * Ruta [GET] /distros/edit/{id} que muestra el formulario de actualización de una nueva distribución.
+     * Ruta [GET] /jugadores/edit/{id} que muestra el formulario de actualización del jugador seleccionado
      *
-     * @param id Código de la distribución.
+     * @param id - Código del jugador
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
     public function getEdit($id){
         global $posicionValues;
@@ -174,12 +175,12 @@ class JugadoresController extends BaseController {
     }
 
     /**
-     * Ruta [PUT] /distros/edit/{id} que actualiza toda la información de una distribución. Se usa el verbo
-     * put porque la actualización se realiza en todos los campos de la base de datos.
+     * Ruta [PUT] /jugadores/edit/{id} que actualiza toda la información del jugador seleccionado
+     * Se usa el verbo put porque la actualización se realiza en todos los campos de la base de datos
      *
-     * @param id Código de la distribución.
+     * @param id - Código del jugador
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
     public function putEdit($id){
         global $posicionValues;
@@ -195,9 +196,9 @@ class JugadoresController extends BaseController {
         if( !empty($_POST)){
             $validator = new Validator();
 
+            //Mensajes que se muestran si hay algun error con los datos introducidos
             $requiredFieldMessageError = "El {label} es requerido";
             $numberFieldMessageError = "El {label} debe ser un numero";
-            $imagenFieldMessageError = "La imagen no es valida o que el formato no es jpg, jpeg, png o gif";
             $rangeEdadFieldMessageError = "El rango del campo Edad es entre 0 y 115";
             $rangeAlturaFieldMessageError = "El rango del campo Altura es entre 1.30 y 2.30";
             $rangePesoFieldMessageError = "El rango del campo Peso es entre 40 y 300";
@@ -206,8 +207,8 @@ class JugadoresController extends BaseController {
             $rangeAmarillasFieldMessageError = "El rango del campo Tarjetas amarillas es entre 0 y 500";
             $rangeRojasFieldMessageError = "El rango del campo Tarjetas rojas es entre 0 y 500";
 
+            //Se comprueba si los datos introducidos son correctos
             $validator->add('imagen:Imagen', 'required',[],$requiredFieldMessageError);
-            //$validator->add('imagen:Imagen', 'File\Image', 'jpg,jpeg,png,gif', $imagenFieldMessageError);
             $validator->add('nombre:Nombre', 'required',[],$requiredFieldMessageError);
             $validator->add('apellido:Apellidos', 'required', [], $requiredFieldMessageError);
             $validator->add('edad:Edad', 'required',[], $requiredFieldMessageError);
@@ -248,6 +249,7 @@ class JugadoresController extends BaseController {
 
             if ($validator->validate($_POST)) {
 
+                //Comprueba si la imagen es correcta o no
                 $jugador['imagen'] = imagenExiste($jugador['imagen']);
 
                 $jugador = Jugador::where('id', $id)->update([
@@ -264,7 +266,6 @@ class JugadoresController extends BaseController {
                     'rojas'           => $jugador['rojas']
                 ]);
 
-                // Si se guarda sin problemas se redirecciona la aplicación a la página de inicio
                 header('Location: ' . BASE_URL);
             }else{
                 $errors = $validator->getMessages();
@@ -279,16 +280,16 @@ class JugadoresController extends BaseController {
     }
 
     /**
-     * Ruta raíz [GET] /distros para la dirección home de la aplicación. En este caso se muestra la lista de distribuciones.
+     * Ruta raíz [GET] /jugadores para la dirección /equipos/{id} de la aplicacion
+     * En este caso se muestra la lista de jugadores
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Devuelve todos los jugadores de un equipo
      *
-     * Ruta [GET] /distro/{id} que muestra la página de detalle de la distribución.
-     * todo: La vista de detalle está pendiente de implementar.
+     * Ruta [GET] /jugadores/{id} que muestra la página de detalle del jugador
      *
-     * @param id Código de la distribución.
+     * @param id - Código del jugador
      *
-     * @return string Render de la web con toda la información.
+     * @return string - Devuelve todos los datos del jugador
      */
     public function getIndex($id = null){
         if( is_null($id) ){
@@ -297,7 +298,6 @@ class JugadoresController extends BaseController {
             ];
 
             $jugador = Jugador::query()->orderBy('id','desc')->get();
-            //$distros = Distro::all();
 
             return $this->render('home.twig', [
                 'jugador' => $jugador,
@@ -313,11 +313,11 @@ class JugadoresController extends BaseController {
 
             $jugador = Jugador::find($id);
 
+            //Si el jugador con esa id no existe te envia a una pagina de error
             if( !$jugador ){
                 return $this->render('404.twig', ['webInfo' => $webInfo]);
             }
 
-            //dameDato($distro);
             return $this->render('jugador.twig', [
                 'jugador' => $jugador,
                 'webInfo'=> $webInfo]);
@@ -326,7 +326,7 @@ class JugadoresController extends BaseController {
     }
 
     /**
-     * Ruta [DELETE] /distros/delete para eliminar la distribución con el código pasado
+     * Ruta [DELETE] /jugadores/delete para eliminar al jugador con el código pasado
      */
     public function deleteIndex(){
         $id = $_REQUEST['id'];
