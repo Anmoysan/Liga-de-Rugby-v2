@@ -52,9 +52,9 @@
             <tbody>
             <tr>
                 <td>{{ jugador.partidos }}</td>
-                <td>{{ (jugador.partidos/jugador.ensayos)|number_format(2, ',', '.') }}</td>
-                <td>{{ (jugador.partidos/jugador.amarillas)|number_format(2, ',', '.') }}</td>
-                <td>{{ (jugador.partidos/jugador.rojas)|number_format(2, ',', '.') }}</td>
+                <td>{% if jugador.ensayos == 0 %}0{% else %}{{ (jugador.partidos/jugador.ensayos)|number_format(2, ',', '.') }}{% endif %}</td>
+                <td>{% if jugador.amarillas == 0 %}0{% else %}{{ (jugador.partidos/jugador.amarillas)|number_format(2, ',', '.') }}{% endif %}</td>
+                <td>{% if jugador.rojas == 0 %}0{% else %}{{ (jugador.partidos/jugador.rojas)|number_format(2, ',', '.') }}{% endif %}</td>
             </tr>
             </tbody>
         </table>

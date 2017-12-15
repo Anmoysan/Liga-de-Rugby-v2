@@ -73,7 +73,7 @@
                     </td>
                     <td>{{ jugador.posicion }}</td>
                     <td>{{ jugador.partidos }}</td>
-                    <td>{{ jugador.partidos/jugador.ensayos }}</td>
+                    <td>{% if jugador.ensayos == 0 %}0{% else %}{{ jugador.partidos/jugador.ensayos }}{% endif %}</td>
                 </tr>
             {% endfor %}
             </tbody>

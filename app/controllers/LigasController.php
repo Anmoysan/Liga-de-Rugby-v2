@@ -7,7 +7,6 @@ use App\Models\Equipo;
 use App\Models\Liga;
 use Phroute\Phroute\RouteCollector;
 use Sirius\Validation\Validator;
-use Sirius\Validation\Helper;
 
 class LigasController extends BaseController
 {
@@ -179,6 +178,7 @@ class LigasController extends BaseController
             $validator->add('max_equipos:Equipos Maximos', 'between', array('min' => 12, 'max' => 32), $rangeEquiposFieldMessageError);
             $validator->add('inicio_liga:Inicio de la Liga', 'required', [], $requiredFieldMessageError);
             $validator->add('fin_liga:Fin de la Liga', 'required', [], $requiredFieldMessageError);
+
 
             // Extraemos los datos enviados por POST
             $liga['id'] = $id;

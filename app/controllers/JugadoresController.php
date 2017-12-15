@@ -29,6 +29,7 @@ class JugadoresController extends BaseController {
         $jugador = array_fill_keys(['imagen', 'nombre', 'apellido', 'edad', 'altura', 'peso', 'posicion', 'partidos', 'ensayos', 'amarillas', 'rojas'], "");
 
         return $this->render('formJugador.twig', [
+            'nombreEquipo'  => $nombreEquipo,
             'posicionValues'  => $posicionValues,
             'jugador'        => $jugador,
             'errors'        => $errors,
@@ -134,6 +135,7 @@ class JugadoresController extends BaseController {
         }
 
         return $this->render('formJugador.twig', [
+            'nombreEquipo'  => $nombreEquipo,
             'posicionValues'  => $posicionValues,
             'jugador'        => $jugador,
             'errors'        => $errors,
