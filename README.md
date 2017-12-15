@@ -39,6 +39,7 @@ Por ultimo se debe acceder a la terminal del editor del programa y ejecutar el c
 Desde cualquier página aparecera una barra arriba de navegacion donde nos permitira movernos rapidamente desde las paginas. Aparte exite una barra de búsqueda actualmente fura de funcionamiento y un menu desplegable llamado `"`Acceso`"`.
 
 Desde `"`Acceso`"` se puede acceder a dos funciones llamadas login y registro que nos permite crear o acceder a nuestro usuario. Si accedemos a nuestro usuario `"`Acceso`"` se habra cambiado por el nombre de tu usuario y en vez de login y registro aparecera `"`Cerrar Sesion`"`.
+
 ![Loggueado](https://imgur.com/BYTvSJO.png)
 ![Sin loguear](https://imgur.com/59c9pS9.png)
 
