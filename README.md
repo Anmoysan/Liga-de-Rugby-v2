@@ -12,7 +12,7 @@ Para poder usar correctamente la aplicacion debe terner instalado composer de ma
 
 Si tiene un MAMP debe seleccionar la version de PHP desde `"`Preferences`"`/`"`PHP`"` y ahi selecciona la versión. Además en `"`Preferences`"`/`"`WebServer`"` se debe indicar la carpeta del proyecto y dentro seleccionar la carpeta "public".
 
-Se debe crear una base de datos con el nombre que prefiera y dentro se debe importar un archivo llamado `"`createdb.sql`"v situado en la carpeta del proyecto. Lo que nos permitira crear todas las tablas y sus datos correspondientes.
+Se debe crear una base de datos con el nombre que prefiera y dentro se debe importar un archivo llamado `"`createdb.sql`"` situado en la carpeta del proyecto. Lo que nos permitira crear todas las tablas y sus datos correspondientes.
 
 Tambien en la carpeta del proyecto hay un archivo llamado ".env.example" que se debe usar como ejemplo para crear un archivo `"`.env`"` para linux y `"`env`"` en Windows para evitar errores y rellenar los datos con sus valores correspondientes.
 
@@ -62,4 +62,4 @@ De igual forma si accedemos a un equipo nos mostrará sus datos y los jugadores 
 
 ![Pantalla Inicio](https://imgur.com/eEwr9dT.png)
 
-###**Espero que les sea de ayuda y gracias por usar esta aplicacion**###
+**Espero que les sea de ayuda y gracias por usar esta aplicacion**
