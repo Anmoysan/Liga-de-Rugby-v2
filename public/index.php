@@ -45,15 +45,7 @@ $route = $_GET['route'] ?? "/";
 $router = new RouteCollector();
 
 
-//
-
-/*$router->controller('/', App\Controllers\HomeController::class);
-$router->controller('/ligas', App\Controllers\LigasController::class);
-$router->controller('/equipos', App\Controllers\EquiposController::class);
-$router->controller('/jugadores', App\Controllers\JugadoresController::class);*/
-
-// Filtro para aplicar a rutas a USUARIOS AUTENTICADOS
-// en el sistema
+// Filtro para aplicar a rutas a USUARIOS AUTENTICADOS en el sistema
 $router->filter('auth', function(){
     if(!isset($_SESSION['userId'])){
         header('Location: '. BASE_URL);
@@ -83,8 +75,7 @@ $router->group(['before' => 'auth'], function ($router){
     $router->get('/logout', ['\App\Controllers\HomeController', 'getLogout']);
 });
 
-// Filtro para aplicar a rutas a USUARIOS NO AUTENTICADOS
-// en el sistema
+// Filtro para aplicar a rutas a USUARIOS NO AUTENTICADOS en el sistema
 $router->filter('noAuth', function(){
     if( isset($_SESSION['userId'])){
         header('Location: '. BASE_URL);
@@ -101,6 +92,7 @@ $router->group(['before' => 'noAuth'], function ($router){
 
 // Rutas sin filtros
 $router->get('/',['\App\Controllers\HomeController', 'getIndex']);
+$router->post('/',['\App\Controllers\HomeController', 'postIndex']);
 $router->get('/ligas/{id}', ['\App\Controllers\LigasController', 'getIndex']);
 $router->post('/ligas/{id}', ['\App\Controllers\LigasController', 'postIndex']);
 
@@ -111,9 +103,6 @@ $router->get('/jugadores/{id}', ['\App\Controllers\JugadoresController', 'getInd
 $router->post('/jugadores/{id}', ['\App\Controllers\JugadoresController', 'postIndex']);
 
 $router->controller('/api', App\Controllers\ApiController::class);
-
-
-//
 
 $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 

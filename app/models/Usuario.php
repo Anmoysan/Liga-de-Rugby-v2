@@ -3,6 +3,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Clase Usuario
+ *
+ * @package App\Models
+ */
 class Usuario extends Model{
 
     protected $table = "usuario";

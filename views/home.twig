@@ -6,8 +6,10 @@
 
 
 {% block nav %}
-    <span class="navbar-brand"> | </span>
-    <a class="navbar-brand" href="{{ 'ligas/new' | url }}">Añadir Liga</a>
+    {% if session.userId %}
+        <span class="navbar-brand"> | </span>
+        <a class="navbar-brand" href="{{ 'ligas/new' | url }}">Añadir Liga</a>
+    {% endif %}
 {% endblock %}
 
 

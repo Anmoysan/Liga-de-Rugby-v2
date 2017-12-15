@@ -3,12 +3,15 @@
 {% block nav %}
     <span class="navbar-brand"> | </span>
     <a class="navbar-brand" href="../ligas/{{ liga.id }}">Liga</a>
-    {% if not maximosEquipos %}<span class="navbar-brand"> | </span>
-        <form action="../equipos/new" method="POST" id="newEquipo" class="navbar-brand">
-            <input type="hidden" name="nombreLiga" value="{{ liga.nombre }}">
-            <input type="hidden" name="_method" value="GET">
-            <button type="submit" class="btn-link btn-alert"><span>Añadir Equipo</span></button>
-        </form>
+    {% if session.userId %}
+        {% if not maximosEquipos %}
+            <span class="navbar-brand"> | </span>
+            <form action="../equipos/new" method="POST" id="newEquipo" class="navbar-brand">
+                <input type="hidden" name="nombreLiga" value="{{ liga.nombre }}">
+                <input type="hidden" name="_method" value="GET">
+                <button type="submit" class="btn-link btn-alert"><span>Añadir Equipo</span></button>
+            </form>
+        {% endif %}
     {% endif %}
     <!--<a class="navbar-brand" href="{{ 'equipos/new' | url }}">Añadir Equipo</a>-->
 {% endblock %}

@@ -115,7 +115,7 @@ class LigasController extends BaseController
     /**
      * Ruta [GET] /ligas/edit/{id} que muestra el formulario de actualización de la liga seleccionada
      *
-     * @param id - Código de la liga
+     * @param $id - Código de la liga
      *
      * @return string - Envia al formulario de ligas
      */
@@ -148,7 +148,7 @@ class LigasController extends BaseController
      * Ruta [PUT] /ligas/edit/{id} que actualiza toda la información de la liga seleccionada
      * Se usa el verbo put porque la actualización se realiza en todos los campos de la base de datos
      *
-     * @param id - Código de la liga.
+     * @param $id - Código de la liga.
      *
      * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
@@ -207,7 +207,7 @@ class LigasController extends BaseController
                     'fin_liga' => $liga['fin_liga']
                 ]);
 
-                header('Location: ' . BASE_URL);
+                header("Location: /ligas/$id");
             } else {
                 $errors = $validator->getMessages();
             }
@@ -227,7 +227,7 @@ class LigasController extends BaseController
      *
      * Ruta [GET] /ligas/{id} que muestra la página de detalle de la liga
      *
-     * @param id - Código de la liga
+     * @param $id - Código de la liga
      *
      * @return string - Devuelve todos los datos de la liga
      */
@@ -306,5 +306,9 @@ class LigasController extends BaseController
         $liga = Liga::destroy($id);
 
         header("Location: " . BASE_URL);
+    }
+
+    public function search($q){
+        return Liga::where('nombre', 'LIKE', '%'.$q.'%')->get();
     }
 }

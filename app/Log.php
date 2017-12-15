@@ -6,7 +6,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 /**
- * Class Log que usa la aplicación para escribir información en los archivos de log.
+ * Class Log que usa la aplicación para escribir información en los archivos de log
  *
  * @package App
  */
@@ -15,7 +15,7 @@ class Log {
     private static $_logger = null;
 
     /**
-     * Método que usa el patrón Singleton para tener solo una instancia de Logger en toda la aplicación.
+     * Método que usa el patrón Singleton para tener solo una instancia de Logger en toda la aplicación
      *
      * @return Logger|null
      */
@@ -27,9 +27,9 @@ class Log {
     }
 
     /**
-     * Método que escribe un mensaje en el archivo de Logs de error.
+     * Método que escribe un mensaje en el archivo de Logs de error
      *
-     * @param $error mensaje de error.
+     * @param $error - Mensaje de error
      */
     public static function logError($error){
         self::getLogger()->pushHandler(
@@ -39,9 +39,9 @@ class Log {
     }
 
     /**
-     * Método que escribe un mensaje en el archivo de Logs de información.
+     * Método que escribe un mensaje en el archivo de Logs de información
      *
-     * @param $info mensaje de información.
+     * @param $info - Mensaje de información
      */
     public static function logInfo($info){
         self::getLogger()->pushHandler(

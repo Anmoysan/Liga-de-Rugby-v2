@@ -116,7 +116,7 @@ class EquiposController extends BaseController {
     /**
      * Ruta [GET] /equipos/edit/{id} que muestra el formulario de actualización del equipo seleccionado
      *
-     * @param id - Código del equipo
+     * @param $id - Código del equipo
      *
      * @return string - Envia al formulario de equipos
      */
@@ -150,7 +150,7 @@ class EquiposController extends BaseController {
      * Ruta [PUT] /equipos/edit/{id} que actualiza toda la información del equipo seleccionado
      * Se usa el verbo put porque la actualización se realiza en todos los campos de la base de datos
      *
-     * @param id - Código del equipo
+     * @param $id - Código del equipo
      *
      * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
@@ -207,7 +207,7 @@ class EquiposController extends BaseController {
                     'puntuacion'     => $equipo['puntuacion']
                 ]);
 
-                header('Location: ' . BASE_URL);
+                header("Location: /equipos/$id");
             }else{
                 $errors = $validator->getMessages();
             }
@@ -227,7 +227,7 @@ class EquiposController extends BaseController {
      *
      * Ruta [GET] /equipos/{id} que muestra la página de detalle del equipo
      *
-     * @param id - Código del equipo
+     * @param $id - Código del equipo
      *
      * @return string - Devuelve todos los datos del equipo
      */
@@ -279,5 +279,9 @@ class EquiposController extends BaseController {
         $equipo = Equipo::destroy($id);
 
         header("Location: ". BASE_URL);
+    }
+
+    public function search($q){
+        return Equipo::where('nombre', 'LIKE', '%'.$q.'%')->orWhere('liga', 'LIKE', '%'.$q.'%')->get();
     }
 }

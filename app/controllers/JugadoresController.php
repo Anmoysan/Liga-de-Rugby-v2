@@ -144,7 +144,7 @@ class JugadoresController extends BaseController {
     /**
      * Ruta [GET] /jugadores/edit/{id} que muestra el formulario de actualización del jugador seleccionado
      *
-     * @param id - Código del jugador
+     * @param $id - Código del jugador
      *
      * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
@@ -178,7 +178,7 @@ class JugadoresController extends BaseController {
      * Ruta [PUT] /jugadores/edit/{id} que actualiza toda la información del jugador seleccionado
      * Se usa el verbo put porque la actualización se realiza en todos los campos de la base de datos
      *
-     * @param id - Código del jugador
+     * @param $id - Código del jugador
      *
      * @return string - Si se usa el return tiene un error en los datos introducidos y debera arreglarlo
      */
@@ -266,7 +266,7 @@ class JugadoresController extends BaseController {
                     'rojas'           => $jugador['rojas']
                 ]);
 
-                header('Location: ' . BASE_URL);
+                header("Location: /jugadores/$id");
             }else{
                 $errors = $validator->getMessages();
             }
@@ -287,7 +287,7 @@ class JugadoresController extends BaseController {
      *
      * Ruta [GET] /jugadores/{id} que muestra la página de detalle del jugador
      *
-     * @param id - Código del jugador
+     * @param $id - Código del jugador
      *
      * @return string - Devuelve todos los datos del jugador
      */
@@ -334,5 +334,9 @@ class JugadoresController extends BaseController {
         $jugador = Jugador::destroy($id);
 
         header("Location: ". BASE_URL);
+    }
+
+    public function search($q){
+        return Jugador::where('nombre', 'LIKE', '%'.$q.'%')->orWhere('equipo', 'LIKE', '%'.$q.'%')->orWhere('apellido', 'LIKE', '%'.$q.'%')->orWhere('posicion', 'LIKE', '%'.$q.'%')->get();
     }
 }
