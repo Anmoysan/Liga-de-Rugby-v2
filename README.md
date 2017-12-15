@@ -4,7 +4,7 @@ Esta aplicacion de **rugby** permite gestionar ligas, equipos y jugadores. Apart
 
 ### Instalacion ###
 
-Para poder instalar la aplicacion desde un terminal de linux o terminal git realiza un `"`$ git clone https://github.com/Anmoysan/LigaRugbyEspanolV2.git`"` e importa la ultima version del proyecto a tu equipo.
+Para poder instalar la aplicacion desde un terminal de linux o terminal git realiza un `"`$ git clone https://github.com/Anmoysan/LigaRugbyEspanolV2.git `"` e importa la ultima version del proyecto a tu equipo.
 
 Para poder usar correctamente la aplicacion debe terner instalado composer de manera nativa, también debe terner de manera nativa apache o en su caso tener instalado una aplicacion como MAMP y meter el proyecto en su carpeta localhost.
 
