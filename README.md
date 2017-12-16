@@ -43,7 +43,7 @@ Desde `"`Acceso`"` se puede acceder a dos funciones llamadas login y registro qu
 ![Loggueado](https://imgur.com/BYTvSJO.png)
 ![Sin loguear](https://imgur.com/59c9pS9.png)
 
-Si no se esta loggueado solo se puede ver las ligas, equipos y jugadores, por el contrario se esta loggueado se puede crear una entidad desde donde se quiere guardar.
+Si no se esta loggueado solo se puede ver las ligas, equipos y jugadores, por el contrario se esta loggueado se puede crear, editar y eliminar una entidad desde donde se quiere guardar.
 Ej: Si se quiere crear un equipos se debe hacer desde una liga.
 
 ![Pantalla Inicio](https://imgur.com/TE1mSZO.png)
